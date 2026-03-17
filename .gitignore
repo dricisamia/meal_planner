@@ -46,3 +46,13 @@ app.*.map.json
 
 # Firebase
 lib/firebase_options.dart
+firebase.json
+.firebaserc
+
+# Clés et secrets
+*.env
+.env
+*.key
+*.pem
+google-services.json
+GoogleService-Info.plist
