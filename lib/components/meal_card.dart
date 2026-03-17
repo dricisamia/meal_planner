@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import '../models/meal.dart';
 
 class MealCard extends StatelessWidget {
-  final String mealName;
-  final String imgPath;
+  final Meal meal;
 
   const MealCard({
     super.key,
-    required this.mealName,
-    required this.imgPath,
+    required this.meal,
   });
 
   @override
@@ -17,13 +16,13 @@ class MealCard extends StatelessWidget {
         child: Column(
           children: [
             Image.asset(
-              imgPath,
+              meal.imgPath,
               height: 80,
               fit: BoxFit.cover,
             ),
             Expanded(
               child: Text(
-                mealName,
+                meal.name,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -34,7 +33,13 @@ class MealCard extends StatelessWidget {
                 children: [
                   IconButton(
                     icon: Icon(Icons.visibility),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(
+                        context,
+                        'Ingredients',
+                        arguments: meal,
+                      );
+                    },
                   ),
                   Expanded(
                     child: IconButton(

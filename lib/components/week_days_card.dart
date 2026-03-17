@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import '../models/meals_of_a_day.dart';
+import '../models/meal.dart';
 
 class WeekDaysCard extends StatelessWidget {
-  final String day;
+  final MealsOfADay dayAndItsListOfMeals;
 
-  const WeekDaysCard({super.key, required this.day});
+  const WeekDaysCard({
+    super.key,
+    required this.dayAndItsListOfMeals,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +26,7 @@ class WeekDaysCard extends StatelessWidget {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                day,
+                dayAndItsListOfMeals.day,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.black,
@@ -36,14 +41,28 @@ class WeekDaysCard extends StatelessWidget {
               children: [
                 IconButton(
                   icon: Icon(Icons.visibility),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      'Meals',
+                      arguments: dayAndItsListOfMeals,
+                    );
+                  },
                   color: Colors.orange,
                 ),
                 SizedBox(width: 20),
                 IconButton(
                   icon: Icon(Icons.add),
-                  onPressed: () {},
-                  color: Colors.black,
+                  onPressed: () async {
+                    final newMeal = await Navigator.pushNamed(
+                      context,
+                      'AddNewMeal',
+                      arguments: dayAndItsListOfMeals,
+                    );
+                    if (newMeal != null) {
+                      dayAndItsListOfMeals.listOfMealsForADay.add(newMeal as Meal);
+                    }
+                  },
                 ),
               ],
             ),

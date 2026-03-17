@@ -25,12 +25,16 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.orange),
         ),
       ),
-      home: IngredientsOfAMealScreen(),
-      // home: HomeScreen(),
-      // home: LoginScreen(),
-      // home: SignupScreen(),
-      // home: MealsOfADayScreen(),
-      // home: AddNewMealScreen(),
+      // La première page affichée est LoginScreen
+      home: LoginScreen(),
+      routes: {
+        'Home': (context) => HomeScreen(),
+        'Login': (context) => LoginScreen(),
+        'Signup': (context) => SignupScreen(),
+        'Meals': (context) => MealsOfADayScreen(),
+        'AddNewMeal': (context) => AddNewMealScreen(),
+        'Ingredients': (context) => IngredientsOfAMealScreen(),
+      },
     );
   }
 }

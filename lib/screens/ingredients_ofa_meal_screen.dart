@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import '../models/meal.dart';
 
 class IngredientsOfAMealScreen extends StatelessWidget {
   const IngredientsOfAMealScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final currentMeal =
+        ModalRoute.of(context)?.settings.arguments as Meal;
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Ingredients list of the meal',
+            'Ingredients list of ${currentMeal.name}',
             style: TextStyle(
               color: Colors.orange,
               fontWeight: FontWeight.bold,
@@ -19,19 +23,25 @@ class IngredientsOfAMealScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'Login',
+                (route) => false,
+              );
+            },
           ),
         ],
       ),
       body: ListView.builder(
         shrinkWrap: true,
-        itemCount: 0,
+        itemCount: currentMeal.listOfIngredients.length,
         itemBuilder: (context, i) {
           return Card(
             color: Colors.amber,
             child: ListTile(
               title: Text(
-                'Ingredient',
+                currentMeal.listOfIngredients[i],
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

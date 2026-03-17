@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../components/meal_card.dart';
+import '../models/meals_of_a_day.dart';
 
 class MealsOfADayScreen extends StatefulWidget {
   const MealsOfADayScreen({super.key});
@@ -11,11 +12,14 @@ class MealsOfADayScreen extends StatefulWidget {
 class _MealsOfADayScreenState extends State<MealsOfADayScreen> {
   @override
   Widget build(BuildContext context) {
+    final dayAndItsListOfMeals =
+        ModalRoute.of(context)?.settings.arguments as MealsOfADay;
+
     return Scaffold(
       appBar: AppBar(
         title: Center(
           child: Text(
-            'Meals of the day',
+            'Meals for ${dayAndItsListOfMeals.day}',
             style: TextStyle(
               color: Colors.orange,
               fontWeight: FontWeight.bold,
@@ -25,19 +29,24 @@ class _MealsOfADayScreenState extends State<MealsOfADayScreen> {
         actions: [
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'Login',
+                (route) => false,
+              );
+            },
           ),
         ],
       ),
       body: GridView.builder(
-        itemCount: 0,
+        itemCount: dayAndItsListOfMeals.listOfMealsForADay.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 3,
         ),
         itemBuilder: (context, index) {
           return MealCard(
-            mealName: 'Meal',
-            imgPath: 'assets/images/logo.png',
+            meal: dayAndItsListOfMeals.listOfMealsForADay[index],
           );
         },
       ),

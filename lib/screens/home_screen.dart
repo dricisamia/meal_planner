@@ -1,15 +1,44 @@
 import 'package:flutter/material.dart';
 import '../components/week_days_card.dart';
+import '../models/meal.dart';
+import '../models/meals_of_a_day.dart';
 
 class HomeScreen extends StatelessWidget {
-  final List<String> week_days_list = [
-    'Saturday',
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
+  final List<MealsOfADay> week_days_list = [
+    MealsOfADay(
+      day: 'Saturday',
+      listOfMealsForADay: [
+        Meal(
+          name: 'Pizza',
+          imgPath: 'assets/images/logo.png',
+          listOfIngredients: ['Tomato', 'Cheese', 'Flour'],
+        ),
+      ],
+    ),
+    MealsOfADay(
+      day: 'Sunday',
+      listOfMealsForADay: [],
+    ),
+    MealsOfADay(
+      day: 'Monday',
+      listOfMealsForADay: [],
+    ),
+    MealsOfADay(
+      day: 'Tuesday',
+      listOfMealsForADay: [],
+    ),
+    MealsOfADay(
+      day: 'Wednesday',
+      listOfMealsForADay: [],
+    ),
+    MealsOfADay(
+      day: 'Thursday',
+      listOfMealsForADay: [],
+    ),
+    MealsOfADay(
+      day: 'Friday',
+      listOfMealsForADay: [],
+    ),
   ];
 
   @override
@@ -28,7 +57,13 @@ class HomeScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                'Login',
+                (route) => false,
+              );
+            },
           ),
         ],
       ),
@@ -37,7 +72,9 @@ class HomeScreen extends StatelessWidget {
         shrinkWrap: true,
         itemCount: week_days_list.length,
         itemBuilder: (context, index) {
-          return WeekDaysCard(day: week_days_list[index]);
+          return WeekDaysCard(
+            dayAndItsListOfMeals: week_days_list[index],
+          );
         },
       ),
     );

@@ -3,6 +3,7 @@ import '../components/my_buttons.dart';
 import '../components/my_textfield.dart';
 
 class LoginScreen extends StatelessWidget {
+  GlobalKey<FormState> keyFormState = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController pwdController = TextEditingController();
 
@@ -11,62 +12,81 @@ class LoginScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              SizedBox(height: 60),
-              Text(
-                'Welcome to my App',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
+          padding: EdgeInsets.all(20),
+          child: Form(
+            key: keyFormState,
+            child: Column(
+              children: [
+                SizedBox(height: 60),
+                Text(
+                  'Welcome to my App',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: AssetImage('assets/images/logo.png'),
-              ),
-              SizedBox(height: 20),
-              MyTextField(
-                TFHintText: 'Email',
-                TFIcon: Icon(Icons.email),
-                isObscure: false,
-                TFController: emailController,
-              ),
-              SizedBox(height: 10),
-              MyTextField(
-                TFHintText: 'Password',
-                TFIcon: Icon(Icons.lock),
-                isObscure: true,
-                TFController: pwdController,
-              ),
-              SizedBox(height: 15),
-              MyElevatedButton(
-                buttonLabel: 'Login',
-                onPressedFct: () {},
-              ),
-              SizedBox(height: 10),
-              MyTextButton(
-                buttonLabel: 'Forgot your password ?',
-                onPressedFct: () {},
-              ),
-              SizedBox(height: 5),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Don't have an account ?",
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                  MyTextButton(
-                    buttonLabel: 'Signup',
-                    onPressedFct: () {},
-                  ),
-                ],
-              ),
-            ],
+                SizedBox(height: 20),
+                CircleAvatar(
+                  radius: 50,
+                  backgroundImage: AssetImage('assets/images/logo.png'),
+                ),
+                SizedBox(height: 20),
+                MyTextField(
+                  TFHintText: 'Email',
+                  TFIcon: Icon(Icons.email),
+                  isObscure: false,
+                  TFController: emailController,
+                  TFValidator: (val) {
+                    if (val!.isEmpty) return "Email can't be empty";
+                    return null;
+                  },
+                ),
+                SizedBox(height: 10),
+                MyTextField(
+                  TFHintText: 'Password',
+                  TFIcon: Icon(Icons.lock),
+                  isObscure: true,
+                  TFController: pwdController,
+                  TFValidator: (val) {
+                    if (val!.isEmpty) return "Password can't be empty";
+                    return null;
+                  },
+                ),
+                SizedBox(height: 15),
+                MyElevatedButton(
+                  buttonLabel: 'Login',
+                  onPressedFct: () {
+                    if (keyFormState.currentState!.validate()) {
+                      Navigator.pushReplacementNamed(context, 'Home');
+                    } else {
+                      print("Not Valid");
+                    }
+                  },
+                ),
+                SizedBox(height: 10),
+                MyTextButton(
+                  buttonLabel: 'Forgot your password ?',
+                  onPressedFct: () {},
+                ),
+                SizedBox(height: 5),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Don't have an account ?",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    MyTextButton(
+                      buttonLabel: 'Signup',
+                      onPressedFct: () {
+                        Navigator.pushReplacementNamed(context, 'Signup');
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
