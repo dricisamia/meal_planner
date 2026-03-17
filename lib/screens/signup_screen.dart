@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../components/my_buttons.dart';
 import '../components/my_textfield.dart';
 import '../helpers/validators.dart';
@@ -67,9 +68,36 @@ class SignupScreen extends StatelessWidget {
                 SizedBox(height: 15),
                 MyElevatedButton(
                   buttonLabel: 'Sign up',
-                  onPressedFct: () {
+                  onPressedFct: () async {
                     if (keyFormState.currentState!.validate()) {
-                      Navigator.pushReplacementNamed(context, 'Login');
+                      try {
+                        // Créer le compte
+                        await FirebaseAuth.instance
+                            .createUserWithEmailAndPassword(
+                          email: emailController.text,
+                          password: pwdController.text,
+                        );
+                        // Envoyer l'email de vérification
+                        FirebaseAuth.instance.currentUser!
+                            .sendEmailVerification();
+                        // Afficher un message à l'utilisateur
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                                'Vérifiez votre email pour activer votre compte !'),
+                            backgroundColor: Colors.orange,
+                          ),
+                        );
+                        // Rediriger vers LoginScreen
+                        Navigator.pushReplacementNamed(context, 'Login');
+                      } on FirebaseAuthException catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(e.message ?? 'Erreur inconnue'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      }
                     } else {
                       print("Not Valid");
                     }

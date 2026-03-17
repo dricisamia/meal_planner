@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../models/meal.dart';
 
 class IngredientsOfAMealScreen extends StatelessWidget {
@@ -23,7 +24,8 @@ class IngredientsOfAMealScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: Icon(Icons.exit_to_app),
-            onPressed: () {
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
               Navigator.pushNamedAndRemoveUntil(
                 context,
                 'Login',

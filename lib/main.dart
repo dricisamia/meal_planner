@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+import 'models/meal.dart';
+import 'models/meals_of_a_day.dart';
 import 'screens/home_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/signup_screen.dart';
@@ -6,7 +11,18 @@ import 'screens/meals_of_a_day_screen.dart';
 import 'screens/add_new_meal_screen.dart';
 import 'screens/ingredients_ofa_meal_screen.dart';
 
-void main() { runApp(MyApp()); }
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialiser Firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // Initialiser Hive
+  await Hive.initFlutter();
+  Hive.registerAdapter(MealAdapter());
+  Hive.registerAdapter(MealsOfADayAdapter());
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -25,7 +41,6 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.orange),
         ),
       ),
-      // La première page affichée est LoginScreen
       home: LoginScreen(),
       routes: {
         'Home': (context) => HomeScreen(),

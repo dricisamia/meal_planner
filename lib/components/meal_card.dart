@@ -3,10 +3,12 @@ import '../models/meal.dart';
 
 class MealCard extends StatelessWidget {
   final Meal meal;
+  final Function() onDeleteMeal;
 
   const MealCard({
     super.key,
     required this.meal,
+    required this.onDeleteMeal,
   });
 
   @override
@@ -44,7 +46,7 @@ class MealCard extends StatelessWidget {
                   Expanded(
                     child: IconButton(
                       icon: Icon(Icons.delete),
-                      onPressed: () {},
+                      onPressed: onDeleteMeal,
                     ),
                   ),
                 ],

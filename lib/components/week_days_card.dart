@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../models/meals_of_a_day.dart';
 import '../models/meal.dart';
 
@@ -41,12 +42,18 @@ class WeekDaysCard extends StatelessWidget {
               children: [
                 IconButton(
                   icon: Icon(Icons.visibility),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      'Meals',
-                      arguments: dayAndItsListOfMeals,
-                    );
+                  onPressed: () async {
+                    try {
+                      final dayMealsBox =
+                          await Hive.openBox<MealsOfADay>('MealsBDD');
+                      Navigator.pushNamed(
+                        context,
+                        'Meals',
+                        arguments: dayMealsBox.get(dayAndItsListOfMeals.day),
+                      );
+                    } catch (e) {
+                      print('Erreur ouverture box: $e');
+                    }
                   },
                   color: Colors.orange,
                 ),
@@ -60,9 +67,17 @@ class WeekDaysCard extends StatelessWidget {
                       arguments: dayAndItsListOfMeals,
                     );
                     if (newMeal != null) {
-                      dayAndItsListOfMeals.listOfMealsForADay.add(newMeal as Meal);
+                      // Ajouter le repas à la liste
+                      dayAndItsListOfMeals.listOfMealsForADay
+                          .add(newMeal as Meal);
+                      // Sauvegarder dans Hive
+                      final dayMealsBox =
+                          await Hive.openBox<MealsOfADay>('MealsBDD');
+                      await dayMealsBox.put(
+                          dayAndItsListOfMeals.day, dayAndItsListOfMeals);
                     }
                   },
+                  color: Colors.black,
                 ),
               ],
             ),
