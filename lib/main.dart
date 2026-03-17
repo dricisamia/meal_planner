@@ -26,6 +26,11 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: IngredientsOfAMealScreen(),
+      // home: HomeScreen(),
+      // home: LoginScreen(),
+      // home: SignupScreen(),
+      // home: MealsOfADayScreen(),
+      // home: AddNewMealScreen(),
     );
   }
 }
